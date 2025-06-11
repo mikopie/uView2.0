@@ -63,9 +63,9 @@
 	 * @property {Number}			threshold		滑动距离阈值，只有大于此值，才被认为是要打开菜单（默认 30 ）
 	 * @property {Array}			options			右侧按钮内容
 	 * @property {String | Number}	duration		动画过渡时间，单位ms（默认 350 ）
-	 * @event {Function(index)}	open	组件打开时触发
-	 * @event {Function(index)}	close	组件关闭时触发
-	 * @example	<u-swipe-action><u-swipe-action-item :options="options1" ></u-swipe-action-item></u-swipe-action>
+	 * @event {Function(status)}	statusChange	组件状态发生变化时触发
+	 * @event {Function(index)}	click			按钮被点击时触发
+	 * @example	<u-swipe-action><u-swipe-action-item :options="options1" @statusChange="statusChangeHandler" @click="clickHandler"></u-swipe-action-item></u-swipe-action>
 	 */
 	export default {
 		name: 'u-swipe-action-item',
@@ -90,8 +90,11 @@
 		},
 		watch: {
 			// 由于wxs无法直接读取外部的值，需要在外部值变化时，重新执行赋值逻辑
-			wxsInit(newValue, oldValue) {
+			wxsInit() {
 				this.queryRect()
+			},
+			status(newValue) {
+				this.$emit('statusChange', newValue)
 			}
 		},
 		computed: {
